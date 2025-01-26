@@ -21,4 +21,9 @@ public class QuickDashMc extends JavaPlugin{
 
         logger.log(Level.INFO, "QuickDashMc has been enabled");
     }
+
+    @Override
+    public void onDisable() {
+        webServer.stopWebServer();
+    }
 }
