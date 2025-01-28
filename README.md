@@ -9,7 +9,7 @@ A simple quick setup Dashboard to monitor and controll your Minecraft Servers
 ------------
 
 
-###Simple Setup (not recommended)
+### Simple Setup (not recommended)
 This setup is not save but it is quick and dirty
 ```
 Download the latest release of this project
