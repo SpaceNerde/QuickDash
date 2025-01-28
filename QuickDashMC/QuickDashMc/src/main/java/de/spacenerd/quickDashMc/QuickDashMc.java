@@ -8,13 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickDashMc extends JavaPlugin{
     private static Logger logger;
-    private static QuickDashMc instance;
     private WebServer webServer;
 
     @Override
     public void onEnable() {
         logger = Bukkit.getLogger();
-        instance = this;
+
+        saveDefaultConfig();
 
         this.webServer = new WebServer(this, logger);
         webServer.initWebServer();

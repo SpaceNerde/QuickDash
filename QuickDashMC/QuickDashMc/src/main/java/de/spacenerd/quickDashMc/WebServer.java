@@ -24,6 +24,8 @@ public class WebServer {
         
         // Setup Authentication
         javalin.beforeMatched(ctx -> {
+            if (!instance.getConfig().getBoolean("auth.active")) return;
+
             if (ctx.endpointHandlerPath().startsWith("/api")) {
                 if (!isAuthenticated(ctx)) {
                     throw new UnauthorizedResponse(); // Tryed to access restricted content
@@ -33,7 +35,8 @@ public class WebServer {
         
         // TODO: Make port configureable
         // Start web server on port 7070
-        javalin.start(7070);
+        
+        javalin.start(instance.getConfig().getInt("api.port"));
     }
 
     public void setupRoutes() {
@@ -48,12 +51,12 @@ public class WebServer {
     }
 
     // TODO: Remove this function and replace it with a proper user handler and move AuthToken into config file
-    private static boolean isAuthenticated(Context ctx) {
+    private boolean isAuthenticated(Context ctx) {
         String header = ctx.header("Authorization");
         if (header != null && header.startsWith("Test ")) {
             String token = header.substring(5);
             // Yes.... yes i know this is cheap....
-            return "rand-token".equals(token);
+            return instance.getConfig().get("auth.token").equals(token);
         }
 
         return false;
