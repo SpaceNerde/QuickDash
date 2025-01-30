@@ -4,3 +4,8 @@ api:
 auth:
   active: false
   token: "rand-token"
+
+oAuth:
+  active: false
+  id: "client-id"
+  secret: "auth-secret"
