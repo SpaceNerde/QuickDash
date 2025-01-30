@@ -1,6 +1,0 @@
-name: QuickDashMc
-version: 1.0.0
-main: de.spacenerd.quickDashMc.QuickDashMc
-description: Minecraft side Plugin for QuickDash
-author: SpaceNerd
-api-version: '1.21.4'
