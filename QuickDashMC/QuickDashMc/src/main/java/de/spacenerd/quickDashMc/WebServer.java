@@ -1,17 +1,11 @@
 package de.spacenerd.quickDashMc;
 
-import java.io.Console;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.pac4j.core.config.Config;
+import org.pac4j.javalin.CallbackHandler;
 import org.pac4j.javalin.SecurityHandler;
 import org.pac4j.oauth.client.GitHubClient;
-import org.pac4j.oauth.client.OAuth20Client;
-import org.pac4j.oauth.config.OAuth20Configuration;
-import org.pac4j.oauth.profile.github.GitHubProfileDefinition;
-
-import com.github.scribejava.apis.GitHubApi;
 
 import de.spacenerd.quickDashMc.api.API;
 import io.javalin.Javalin;
@@ -25,6 +19,7 @@ public class WebServer {
     private final Javalin javalin;
 
     private SecurityHandler gitSecurityHandler;
+    CallbackHandler callback ;
 
     public WebServer(QuickDashMc instance, Logger logger) {
         this.instance = instance;
@@ -33,7 +28,10 @@ public class WebServer {
     }
 
     public void initWebServer() {
-        setupOAuth();
+
+        if (instance.getConfig().getBoolean("oAuth.active")) {
+            setupOAuth();
+        }
         
         setupRoutes();
         // Setup Authentication
@@ -54,9 +52,6 @@ public class WebServer {
     public void setupRoutes() {
         API api = new API();
         
-        // Protected Route /api/
-        javalin.before("/api/", gitSecurityHandler);
-
         javalin.get("/api/players", ctx -> api.getPlayers(ctx));
     }
 
@@ -71,7 +66,15 @@ public class WebServer {
 
         Config config = new Config("http://localhost:7070/login/oauth2/github", client);
 
+        callback = new CallbackHandler(config, "http://localhost:7070/login/oauth2/github", true);
+
         gitSecurityHandler = new SecurityHandler(config, "GitHubClient");
+
+        // callback
+        javalin.get("/login/oauth2/github", callback);
+
+        // Protected Route /api/players
+        javalin.before("/api/players", gitSecurityHandler);
     }
 
     // TODO: Remove this function and replace it with a proper user handler and move AuthToken into config file
