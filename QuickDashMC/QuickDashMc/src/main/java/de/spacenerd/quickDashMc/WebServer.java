@@ -89,3 +89,10 @@ public class WebServer {
         return false;
     }
 }
+
+// Rework oAuth 
+// 1 - Redirect to oAuth Github Page
+// 2 - Redirect to Page
+// 3 - Check if codes line up with a post to GitHub
+// 4 - Save Access token in a db and delete when it expires
+// 5 - Use the user access token for further requests

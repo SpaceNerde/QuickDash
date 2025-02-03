@@ -9,3 +9,7 @@ oAuth:
   active: false
   id: "client-id"
   secret: "auth-secret"
+
+db:
+  username: "user"
+  password: "some-password"
